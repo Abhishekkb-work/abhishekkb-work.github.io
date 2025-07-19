@@ -1,28 +1,773 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My VTU SGPA Site</title>
-  <meta name="google-adsense-account" content="ca-pub-3770007315697798">
-  
-  <!-- Google AdSense script -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3770007315697798"
-     crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=900,user-scalable=yes"> 
+  <meta name="google-adsense-account" content="ca-pub-3770007315697798"><!-- Allow zooming -->
+  <meta name="theme-color" content="#000000">
+  <title>SGPA Calculator</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="icon-192.png">
+
+  <a href="abhii.html" id="designerProfileBtn">↪  View Abhishek's Profile</a>
+  <a href="abhisgpa.html" id="feedbackFloatingBtn">Give Feedback</a>
+
+  <style>
+    html {
+      font-size: 62.5%; /* 1rem = 10px */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      /* Body background is light grey */
+      background-color: ;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      font-size: 1.6rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100vw;
+      max-width: 100vw;
+      height: 100vh;
+      margin: 0;
+      /* Container no longer sets a background color */
+      background-color: none;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    /* ✅ NEW: Wrapper for content below heading, with the dark blue background */
+    #main-content-wrapper {
+      background-color: rgba(0, 25, 50, 0.04); /* Darker blue, 80% opacity */
+      width: 100%;
+      padding-top: 20px; /* Add some padding at the top of this section */
+      padding-bottom: 20px; /* Add some padding at the bottom */
+      box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    h1 {
+      text-align: center;
+      /* Heading color is dark blue */
+      color: #000090; /* Dark blue color */
+      font-size: 5.5rem; /* bigger text */
+      font-weight: 900; /* extra bold */
+      letter-spacing: 1.5px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      /* Text-shadow for a black shadow */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .small-text {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      /* "Created by" text color is white */
+      color: #fffff; /* White color for better contrast */
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #999;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+
+    label {
+      font-weight: 800; /* Made text bolder */
+      display: block;
+      margin-bottom: 2rem;
+      color: #003366; /* Changed color to a darker blue */
+      font-size: 2.2rem; /* Made text bigger */
+    }
+
+    input[type="text"], input[type="number"], select {
+      padding: 1.6rem 1.5rem;
+      border: 1px solid #cceeff;
+      border-radius: 8px;
+      background-color: #f9fcff;
+      width: calc(100% - 5rem);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      outline: none;
+      background-color: #fff;
+    }
+
+    select {
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20202.7%2018.4%2075.1a17.6%2017.6%200%200%200-25.7%2023.1l138.4%20140c6.6%206.6%2017.2%206.6%2023.9%200l138.4-140a17.6%2017.6%200%200%200-13-29.8z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 1.5rem top 50%;
+      background-size: 1rem auto;
+      padding-right: 3.5rem;
+    }
+
+    .section {
+      /* ✅ REVERTED: Background for section boxes back to original */
+      background: #f0f8ff;
+      padding: 2rem;
+      border-radius: 10px;
+      margin-top: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e0f0ff;
+      display: none;
+    }
+
+    .section h2 {
+      color: #0056b3;
+      font-size: 2.2rem;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #cfe8ff;
+      padding-bottom: 0.8rem;
+    }
+
+    .subject-row {
+      margin-bottom: 2.5rem;
+      padding: 1.5rem;
+      border: 1px solid #b3d9ff;
+      border-radius: 8px;
+      background-color: #e9f5ff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-end;
+    }
+
+    .subject-row > div {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .subject-row input {
+        margin-bottom: 0;
+    }
+
+    .action-buttons {
+      text-align: center;
+      margin-top: 3.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .action-buttons.stacked {
+      flex-direction: column;
+      align-items: center; /* Center items horizontally when stacked */
+      gap: 1rem; /* Adjust gap for vertical spacing */
+    }
+
+    .action-buttons button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 1.6rem 3.2rem;
+      font-size: 2rem;            /* Bigger text */
+      font-weight: 700;           /* Bolder text */
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 5px 12px rgba(0, 123, 255, 0.25);
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .action-buttons button:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    #result {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-top: 3rem;
+      white-space: pre-line;
+      background-color: #e0ffe0;
+      border: 1px solid #28a745;
+      padding: 3rem; /* Increased padding */
+      border-radius: 15px; /* More rounded corners */
+      color: #1a5e20;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(40, 167, 69, 0.25);
+      display: none;
+      animation: fadeInScale 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #result strong {
+      color: #0056b3;
+    }
+
+    #result .sgpa-value {
+      font-size: 4.5rem; /* Made SGPA value larger */
+      margin-bottom: 1.5rem;
+      color: #007bff;
+      font-weight: 700;
+      display: block; /* Ensures it takes its own line */
+    }
+
+    #initial-form,
+    #cycleSelection,
+    #eeeCycleSelection {
+      /* ✅ REVERTED: Background for initial form and cycle selection boxes back to original */
+      background: #f0f8ff;
+      padding: 4rem;
+      border-radius: 12px;
+      margin-bottom: 3rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      border: 2px solid #e0f0ff;
+      max-width: 700px; /* Original max-width */
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #initial-form label {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Floating Buttons General Style */
+    #designerProfileBtn,
+    #feedbackFloatingBtn {
+      position: fixed;
+      right: 20px;
+      padding: 1.2rem 2rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      z-index: 9999;
+      transition: background 0.3s ease, transform 0.3s ease;
+      animation: floatFade 3s ease-in-out infinite;
+      color: white;
+    }
+
+    #designerProfileBtn {
+      bottom: 70px;
+      background: #007bff; /* Set profile button as blue */
+      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+    }
+
+    #feedbackFloatingBtn {
+      bottom: 20px;
+      background: #0077cc;
+      box-shadow: 0 8px 20px rgba(0, 119, 204, 0.3);
+    }
+
+    #designerProfileBtn:hover {
+      background: #0056b3;
+      transform: translateY(-3px);
+    }
+
+    #feedbackFloatingBtn:hover {
+      background: #005fa3;
+      transform: translateY(-3px);
+    }
+
+    @keyframes floatFade {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-3px);
+      }
+    }
+
+    /* --- New Styles for Informative Sections and Modal --- */
+    .grid {
+        display: grid;
+    }
+
+    @media (min-width: 768px) {
+        .md\:grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .gap-8 { gap: 8rem; }
+    .gap-6 { gap: 6rem; }
+    .gap-4 { gap: 4rem; }
+    .gap-2 { gap: 2rem; }
+    .mb-8 { margin-bottom: 8rem; }
+    .mb-6 { margin-bottom: 6rem; }
+    .mb-4 { margin-bottom: 4rem; }
+    .mb-3 { margin-bottom: 3rem; }
+    .mb-2 { margin-bottom: 2rem; }
+    .mt-1 { margin-top: 1rem; }
+    .mt-2 { margin-top: 2rem; }
+    .mt-4 { margin-top: 4rem; }
+
+    .bg-white { background-color: #fff; }
+    .rounded-lg { border-radius: 0.8rem; }
+    .custom-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    .p-6 { padding: 6rem; }
+    .text-xl { font-size: 2rem; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .text-gray-800 { color: #2d3748; }
+    .text-gray-600 { color: #4a5568; }
+    .list-disc { list-style-type: disc; }
+    .pl-5 { padding-left: 5rem; }
+    .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 2rem; }
+    .border-b { border-bottom-width: 1px; }
+    .border-gray-200 { border-color: #edf2f7; }
+    .border-gray-300 { border-color: #e2e8f0; }
+    .bg-gray-50 { background-color: #f9fafb; }
+    .border { border-width: 1px; }
+    .rounded-md { border-radius: 0.6rem; }
+    .bg-blue-50 { background-color: #eff6ff; }
+    .text-gray-700 { color: #4a5568; }
+    .overflow-x-auto { overflow-x: auto; }
+    .min-w-full { min-width: 100%; }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2rem;
+    }
+    th, td {
+        border: 1px solid #e2e8f0;
+        padding: 1.2rem;
+        text-align: left;
+        font-size: 1.4rem;
+    }
+    th {
+        background-color: #f7fafc;
+        font-weight: 600;
+        color: #2d3748;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f0f8ff;
+    }
+    .font-medium { font-weight: 500; }
+
+    /* ✅ REVERTED: Background for grid divs (informative sections) back to original */
+    .grid > div,
+    .bg-white.rounded-lg.custom-shadow.p-6.mb-8 {
+        background: linear-gradient(135deg, #f8faff 0%, #e0f2f7 100%);
+        border: 1px solid #d0e8f2;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .grid > div:hover,
+    .bg-white.rounded-lg.custom-shadow.p-6.mb-8:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    #grade-card-modal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    #grade-card-modal > div {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    #grade-card-modal h3 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    #grade-card-modal .flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #grade-card-modal .mb-6 {
+        margin-bottom: 2.4rem;
+    }
+
+    #grade-card-modal .close-button {
+        background: none;
+        border: none;
+        font-size: 2.4rem;
+        cursor: pointer;
+        color: #666;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px;
+        line-height: 1;
+    }
+    #grade-card-modal .close-button:hover {
+        color: #333;
+    }
+
+    #grade-card-content {
+        border: 2px solid #007bff;
+        border-radius: 10px;
+        padding: 2rem;
+        background-color: #f0f8ff;
+        position: relative;
+    }
+
+    #grade-card-content p {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+
+    #grade-card-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2rem;
+    }
+    #grade-card-content th, #grade-card-content td {
+        border: 1px solid #b3d9ff;
+        padding: 1.2rem;
+        text-align: left;
+        font-size: 1.5rem;
+    }
+    #grade-card-content th {
+        background-color: #cfe8ff;
+        font-weight: 600;
+        color: #0056b3;
+    }
+    #grade-card-content tbody tr:nth-child(even) {
+        background-color: #e9f5ff;
+    }
+
+    .grade-card-footer {
+        font-size: 1.2rem;
+        color: rgba(0, 0, 0, 0.4);
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    #generateGradeCardBtnBottom {
+        display: block;
+        margin: 2rem auto;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 1.4rem 2.8rem;
+        font-size: 1.6rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+    #generateGradeCardBtnBottom:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .grade-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        font-size: 1.4rem;
+        color: #333;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #ccc;
+    }
+    .grade-card-header .left,
+    .grade-card-header .right {
+        flex-basis: 30%;
+        text-align: left;
+    }
+    .grade-card-header .center {
+        flex-basis: 40%;
+        text-align: center;
+        font-weight: bold;
+        font-size: 2rem;
+        color: #0056b3;
+    }
+    .grade-card-header .right {
+        text-align: right;
+    }
+
+    .grade-card-final-sgpa {
+        text-align: center;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #007bff;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid #cfe8ff;
+    }
+
+    @media print {
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      html {
+        font-size: 70%;
+      }
+
+      body {
+        font-size: 1.2rem;
+        background-color: #fff;
+        color: #000;
+        padding: 10px;
+        box-shadow: none;
+      }
+
+      .container {
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+        color: #000;
+      }
+
+      .small-text, .footer-text {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+        color: #333;
+      }
+
+      #designerProfileBtn,
+      #feedbackFloatingBtn,
+      .action-buttons,
+      #generateGradeCardBtnBottom,
+      .grid,
+      #grade-card-modal {
+        display: none !important;
+      }
+
+      #initial-form,
+      #cycleSelection,
+      #eeeCycleSelection,
+      .section {
+        background: #fff;
+        padding: 0.8rem;
+        border-radius: 0;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        margin-bottom: 0.8rem;
+        margin-top: 0.5rem;
+      }
+
+      label {
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+
+      input[type="text"], input[type="number"], select {
+        padding: 0.3rem 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #aaa;
+        margin-top: 2px;
+      }
+
+      select {
+        background-image: none;
+      }
+
+      .subject-row {
+        margin-bottom: 0.8rem;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        box-shadow: none;
+        page-break-inside: avoid;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .subject-row > div:nth-child(2) {
+          display: none !important;
+      }
+
+      .subject-row label,
+      .subject-row input {
+          flex-shrink: 0;
+          width: auto;
+      }
+
+      .subject-row input[type="text"] {
+          flex-grow: 1;
+          max-width: 60%;
+      }
+
+      .subject-row input[type="number"] {
+          width: 5rem;
+          text-align: center;
+      }
+
+      #result {
+        font-size: 1.4rem;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        border: 2px solid #1e90ff;
+        background-color: #e8f0ff;
+        color: #003366;
+        text-align: left;
+        max-width: 95%;
+        page-break-before: avoid;
+      }
+
+      #result div:first-child {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+      }
+    }
+
+    /* Responsive and better mobile zoom experience */
+    @media screen and (max-width: 768px) {
+      html {
+        font-size: 62.5%;
+      }
+      .container {
+        padding: 10px;
+      }
+      .action-buttons {
+        flex-direction: column; /* Ensure buttons stack on small screens */
+        gap: 1rem;
+      }
+      .action-buttons button {
+        width: 100%;
+        padding: 1.2rem 2rem;
+      }
+      #grade-card-modal > div {
+        padding: 10px;
+        max-width: 100vw;
+        width: 98vw;
+      }
+      .section {
+        padding: 1rem;
+      }
+      .p-6 {
+        padding: 2rem;
+      }
+      th, td {
+        padding: 0.8rem;
+        font-size: 1.2rem;
+      }
+      #grade-card-modal h3 {
+        font-size: 2.2rem;
+      }
+      #grade-card-content th, #grade-card-content td {
+        font-size: 1.3rem;
+      }
+      .grade-card-header .center {
+          font-size: 1.6rem;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      html {
+        font-size: 55%;
+      }
+      .subject-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .subject-row > div {
+        min-width: unset;
+        width: 100%;
+      }
+      input[type="text"], input[type="number"], select {
+        width: calc(100% - 3rem);
+      }
+      .p-6 {
+        padding: 1rem;
+      }
+      th, td {
+        padding: 0.6rem;
+        font-size: 1rem;
+      }
+      #grade-card-modal > div {
+        padding: 0.5rem;
+        max-width: 100vw;
+        width: 99vw;
+      }
+    }
+  </style>
+ <!-- Already existing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- ADD this below -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 <body>
+  <div class="container">
+    <h1>SGPA CALCULATOR</h1>
+    <div class="small-text">Created with ❤️ by ABHISHEK__BAGEWADI</div>
 
-  <h1>Welcome to SGPA Calculator</h1>
-  
-  <!-- Ad section -->
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-3770007315697798"
-       data-ad-slot="5403275850" <!-- Your Ad Slot ID here -->
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-
-</body>
-</html>
+    <!-- ✅ NEW: Wrapper for content below heading, with the dark blue background -->
+    <div id="main-content-wrapper">
+      <div id="initial-form">
+        <label for="fullName">Enter Full Name:</label>
+        <input type="text" id="fullName" oninput="this.value = this.value.toUpperCase()" placeholder="e.g., ABHISHEK" />
+        <label for="streamSelect">Select Stream:</label>
+        <select id="streamSelect" onchange="handleStreamSelection()">
+          <option value="">--Select--</option>
+          <option value="cse">CSE Stream (CS / AIML / CSBS / IS / CSDS / Other)</option>
+          <option value="eee">EEE Stream  (EE / EC / Other)</option>
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3770007315697798"
+     crossorigin="anonymous"></script>
+     <body>
+       <html>
